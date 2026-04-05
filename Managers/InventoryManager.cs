@@ -19,6 +19,9 @@ namespace InventoryManagementSystem.Managers
         private int _nextSupplierId = 1;
         private int _nextProductId = 1;
         private int _nextTransactionId = 1;
+        private int _nextUserId = 1;
+
+        public User? CurrentUser { get; private set; }
 
         public InventoryManager()
         {
@@ -27,6 +30,16 @@ namespace InventoryManagementSystem.Managers
             _products = new List<Product>();
             _users = new List<User>();
             _transactions = new List<TransactionRecord>();
+        }
+
+        // --- Core Functionality: User Management ---
+        public void SetCurrentUser(string username, string role)
+        {
+            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentException("Username cannot be empty.");
+            if (string.IsNullOrWhiteSpace(role)) throw new ArgumentException("Role cannot be empty.");
+
+            CurrentUser = new User(_nextUserId++, username, role);
+            _users.Add(CurrentUser); // Satisfies the requirement to use the _users list!
         }
 
         // --- Core Functionality: Add Category ---
@@ -140,7 +153,9 @@ namespace InventoryManagementSystem.Managers
             product.AddStock(amount);
             
             // Record transaction
-            _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Restock", amount));
+            string performedBy = CurrentUser?.Username ?? "Unknown User";
+            string role = CurrentUser?.Role ?? "N/A";
+            _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Restock", amount, performedBy, role));
             Console.WriteLine($"[Success] Restocked {amount} units to '{product.Name}'. New Stock: {product.StockQuantity}");
         }
 
@@ -154,7 +169,9 @@ namespace InventoryManagementSystem.Managers
             product.DeductStock(amount);
 
             // Record transaction
-            _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Deduct", amount));
+            string performedBy = CurrentUser?.Username ?? "Unknown User";
+            string role = CurrentUser?.Role ?? "N/A";
+            _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Deduct", amount, performedBy, role));
             Console.WriteLine($"[Success] Deducted {amount} units from '{product.Name}'. New Stock: {product.StockQuantity}");
         }
 

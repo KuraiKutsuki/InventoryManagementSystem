@@ -14,6 +14,15 @@ namespace InventoryManagementSystem
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             InventoryManager inventory = new InventoryManager();
 
+            // --- User Login at Startup ---
+            Console.Clear();
+            PrintHeader("SYSTEM LOGIN");
+            string username = GetValidString("  Enter your Username: ");
+            string role = GetValidString("  Enter your Role (e.g., Admin, Staff): ");
+            inventory.SetCurrentUser(username, role);
+            Console.WriteLine($"\n  Welcome, {username} ({role})! Press Enter to continue to the main menu...");
+            Console.ReadLine();
+
             bool isRunning = true;
 
             while (isRunning)
@@ -374,7 +383,7 @@ namespace InventoryManagementSystem
                                         foreach (var t in trans)
                                         {
                                             var pName = inventory.GetProducts().FirstOrDefault(p => p.Id == t.ProductId)?.Name ?? "Unknown";
-                                            Console.WriteLine($"[ID: {t.TransactionId}] {t.Date:yyyy-MM-dd HH:mm} | {t.TransactionType,-7} | {t.Quantity,4} units | Product: {pName}");
+                                            Console.WriteLine($"[ID: {t.TransactionId}] {t.Date:yyyy-MM-dd HH:mm} | {t.TransactionType,-7} | {t.Quantity,4} units | Product: {pName,-15} | By: {t.PerformedBy} ({t.Role})");
                                         }
                                     }
                                 }
