@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using InventoryManagementSystem.Models;
 
 namespace InventoryManagementSystem.Managers
@@ -16,6 +17,7 @@ namespace InventoryManagementSystem.Managers
         // Auto-incrementing IDs
         private int _nextCategoryId = 1;
         private int _nextSupplierId = 1;
+        private int _nextProductId = 1;
 
         public InventoryManager()
         {
@@ -60,6 +62,71 @@ namespace InventoryManagementSystem.Managers
         public IReadOnlyList<Supplier> GetSuppliers()
         {
             return _suppliers.AsReadOnly();
+        }
+
+        // --- Core Functionality: Product Management ---
+        public void AddProduct(string name, int categoryId, int supplierId, decimal price, int stockQuantity, int lowStockThreshold)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Product name cannot be empty.");
+            if (price < 0)
+                throw new ArgumentException("Price cannot be negative.");
+            if (stockQuantity < 0)
+                throw new ArgumentException("Stock quantity cannot be negative.");
+
+            // Validate Category and Supplier exist
+            if (!_categories.Any(c => c.Id == categoryId))
+                throw new Exception($"Category with ID {categoryId} does not exist.");
+            if (!_suppliers.Any(s => s.Id == supplierId))
+                throw new Exception($"Supplier with ID {supplierId} does not exist.");
+
+            Product newProduct = new Product(_nextProductId++, name, categoryId, supplierId, price, stockQuantity, lowStockThreshold);
+            _products.Add(newProduct);
+            Console.WriteLine($"[Success] Product '{name}' added successfully with ID {newProduct.Id}.");
+        }
+
+        public IReadOnlyList<Product> GetProducts()
+        {
+            return _products.AsReadOnly();
+        }
+
+        public IReadOnlyList<Product> SearchProducts(string keyword)
+        {
+            if (string.IsNullOrWhiteSpace(keyword)) return GetProducts();
+            
+            return _products
+                .Where(p => p.Name.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToList()
+                .AsReadOnly();
+        }
+
+        public void UpdateProduct(int id, string newName, decimal newPrice, int newThreshold)
+        {
+            Product? product = _products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+            {
+                throw new Exception($"Product with ID {id} not found.");
+            }
+
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new ArgumentException("Product name cannot be empty.");
+            if (newPrice < 0)
+                throw new ArgumentException("Price cannot be negative.");
+
+            product.UpdateDetails(newName, newPrice, newThreshold);
+            Console.WriteLine($"[Success] Product ID {id} updated successfully.");
+        }
+
+        public void DeleteProduct(int id)
+        {
+            Product? product = _products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+            {
+                throw new Exception($"Product with ID {id} not found.");
+            }
+
+            _products.Remove(product);
+            Console.WriteLine($"[Success] Product ID {id} ('{product.Name}') deleted successfully.");
         }
     }
 }
