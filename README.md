@@ -78,6 +78,6 @@ dotnet run
 
 <div align="center">
 
-Made by [Asthan Eilexer Patanao](https://github.com/KuraiKutsuki)
+Made by [Asthan Eilexer Patanao of BSIT-3A](https://github.com/KuraiKutsuki)
 
 </div>
