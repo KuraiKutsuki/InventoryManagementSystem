@@ -6,7 +6,6 @@ A robust, CLI-based Inventory Management System built in **C#** using strict **O
 
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white)
 ![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
 
 </div>
@@ -79,6 +78,6 @@ dotnet run
 
 <div align="center">
 
-Made with ❤️ by [KuraiKutsuki](https://github.com/KuraiKutsuki)
+Made with by [Asthan Eilexer Patanao](https://github.com/KuraiKutsuki)
 
 </div>
