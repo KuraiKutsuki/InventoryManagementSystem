@@ -12,3 +12,4 @@ D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.
 D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.pdb
 D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.genruntimeconfig.cache
 D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\ref\InventoryManagementSystem.dll
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.sourcelink.json

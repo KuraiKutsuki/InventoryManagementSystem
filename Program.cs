@@ -1,5 +1,6 @@
 ﻿using System;
 using InventoryManagementSystem.Models;
+using InventoryManagementSystem.Managers;
 
 namespace InventoryManagementSystem
 {
@@ -7,17 +8,32 @@ namespace InventoryManagementSystem
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Testing Models...");
+            Console.WriteLine("Testing Inventory Manager...");
 
             try
             {
-                Product testProduct = new Product(1, "Laptop", 101, 201, 999.99m, 10, 5);
-                Console.WriteLine($"Product created: {testProduct.Name}, Stock: {testProduct.StockQuantity}");
-                
-                testProduct.AddStock(5);
-                Console.WriteLine($"Stock after restock: {testProduct.StockQuantity}");
+                InventoryManager inventory = new InventoryManager();
 
-                Console.WriteLine("All models compiled and tested successfully!");
+                // Test Adding Category
+                inventory.AddCategory("Electronics");
+                inventory.AddCategory("Furniture");
+
+                // Test Adding Supplier
+                inventory.AddSupplier("TechCorp", "contact@techcorp.com");
+
+                Console.WriteLine("\n--- Current Categories ---");
+                foreach (var cat in inventory.GetCategories())
+                {
+                    Console.WriteLine($"ID: {cat.Id}, Name: {cat.Name}");
+                }
+
+                Console.WriteLine("\n--- Current Suppliers ---");
+                foreach (var sup in inventory.GetSuppliers())
+                {
+                    Console.WriteLine($"ID: {sup.Id}, Name: {sup.Name}, Contact: {sup.ContactInfo}");
+                }
+
+                Console.WriteLine("\nManager compiled and tested successfully!");
             }
             catch (Exception ex)
             {
