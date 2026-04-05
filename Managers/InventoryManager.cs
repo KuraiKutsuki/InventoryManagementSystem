@@ -18,6 +18,7 @@ namespace InventoryManagementSystem.Managers
         private int _nextCategoryId = 1;
         private int _nextSupplierId = 1;
         private int _nextProductId = 1;
+        private int _nextTransactionId = 1;
 
         public InventoryManager()
         {
@@ -127,6 +128,34 @@ namespace InventoryManagementSystem.Managers
 
             _products.Remove(product);
             Console.WriteLine($"[Success] Product ID {id} ('{product.Name}') deleted successfully.");
+        }
+
+        // --- Core Functionality: Inventory & Transactions ---
+        public void RestockProduct(int productId, int amount)
+        {
+            Product? product = _products.FirstOrDefault(p => p.Id == productId);
+            if (product == null) throw new Exception($"Product with ID {productId} not found.");
+            if (amount <= 0) throw new ArgumentException("Restock amount must be greater than zero.");
+
+            product.AddStock(amount);
+            
+            // Record transaction
+            _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Restock", amount));
+            Console.WriteLine($"[Success] Restocked {amount} units to '{product.Name}'. New Stock: {product.StockQuantity}");
+        }
+
+        public void DeductProduct(int productId, int amount)
+        {
+            Product? product = _products.FirstOrDefault(p => p.Id == productId);
+            if (product == null) throw new Exception($"Product with ID {productId} not found.");
+            if (amount <= 0) throw new ArgumentException("Deduct amount must be greater than zero.");
+            if (product.StockQuantity < amount) throw new InvalidOperationException($"Insufficient stock. Current stock is {product.StockQuantity}.");
+
+            product.DeductStock(amount);
+
+            // Record transaction
+            _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Deduct", amount));
+            Console.WriteLine($"[Success] Deducted {amount} units from '{product.Name}'. New Stock: {product.StockQuantity}");
         }
     }
 }

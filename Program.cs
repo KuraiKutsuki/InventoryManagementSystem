@@ -36,6 +36,7 @@ namespace InventoryManagementSystem
                 MenuRow("5", "Search Product");
                 MenuRow("6", "Update Product");
                 MenuRow("7", "Delete Product");
+                MenuRow("8", "Restock / Deduct Stock");
                 EmptyRow();
                 ThinDivider();
                 EmptyRow();
@@ -185,6 +186,12 @@ namespace InventoryManagementSystem
                             break;
 
                         case "6":
+                            if (!inventory.GetProducts().Any())
+                            {
+                                Console.WriteLine("[Error] No products available to update.");
+                                break;
+                            }
+
                             Console.WriteLine("\n--- Select Category ---");
                             foreach (var cat in inventory.GetCategories()) Console.WriteLine($"  [ID: {cat.Id, -2}] {cat.Name}");
                             int catIdUpdate = GetValidInt("Enter Category ID (type 'cancel' to abort): ");
@@ -238,6 +245,12 @@ namespace InventoryManagementSystem
                             break;
 
                         case "7":
+                            if (!inventory.GetProducts().Any())
+                            {
+                                Console.WriteLine("[Error] No products available to delete.");
+                                break;
+                            }
+
                             Console.WriteLine("\n--- Select Category ---");
                             foreach (var cat in inventory.GetCategories()) Console.WriteLine($"  [ID: {cat.Id, -2}] {cat.Name}");
                             int catIdDelete = GetValidInt("Enter Category ID (type 'cancel' to abort): ");
@@ -265,6 +278,71 @@ namespace InventoryManagementSystem
                             }
                             
                             inventory.DeleteProduct(deleteId);
+                            break;
+
+                        case "8":
+                            if (!inventory.GetProducts().Any())
+                            {
+                                Console.WriteLine("[Error] No products available to adjust stock.");
+                                break;
+                            }
+
+                            Console.WriteLine("\n--- Select Category ---");
+                            foreach (var cat in inventory.GetCategories()) Console.WriteLine($"  [ID: {cat.Id, -2}] {cat.Name}");
+                            int catIdStock = GetValidInt("Enter Category ID (type 'cancel' to abort): ");
+
+                            Console.WriteLine("\n--- Select Supplier ---");
+                            foreach (var sup in inventory.GetSuppliers()) Console.WriteLine($"  [ID: {sup.Id, -2}] {sup.Name}");
+                            int supIdStock = GetValidInt("Enter Supplier ID (type 'cancel' to abort): ");
+
+                            Console.WriteLine("\n--- Available Products ---");
+                            var productsToStock = inventory.GetProducts().Where(p => p.CategoryId == catIdStock && p.SupplierId == supIdStock).ToList();
+                            if (!productsToStock.Any())
+                            {
+                                Console.WriteLine("No products found for this category and supplier.");
+                                break;
+                            }
+                            foreach (var prod in productsToStock) Console.WriteLine($"  [ID: {prod.Id, -2}] {prod.Name} (Current Stock: {prod.StockQuantity})");
+                            Console.WriteLine("--------------------------");
+
+                            int stockProdId;
+                            while (true)
+                            {
+                                stockProdId = GetValidInt("Enter Product ID to adjust stock: ");
+                                if (productsToStock.Any(p => p.Id == stockProdId)) break;
+                                Console.WriteLine("[Error] Product ID not found in the list above. Please try again.");
+                            }
+
+                            string action;
+                            while (true)
+                            {
+                                Console.WriteLine("\nChoose Action:");
+                                Console.WriteLine("1. Restock (Add Stock)");
+                                Console.WriteLine("2. Deduct (Remove Stock)");
+                                action = GetValidString("Enter choice (1 or 2, type 'cancel' to abort): ");
+                                if (action == "1" || action == "2") break;
+                                Console.WriteLine("[Error] Invalid action choice. Please try again.");
+                            }
+
+                            Console.WriteLine(action == "1" ? "\n--- Restock ---" : "\n--- Deduct ---");
+
+                            while (true)
+                            {
+                                try
+                                {
+                                    int amount = GetValidInt("Enter amount (type 'cancel' to abort): ");
+                                    
+                                    if (action == "1") inventory.RestockProduct(stockProdId, amount);
+                                    else inventory.DeductProduct(stockProdId, amount);
+                                    
+                                    break; // Success, exit the loop
+                                }
+                                catch (Exception ex) when (ex is ArgumentException || ex is InvalidOperationException)
+                                {
+                                    Console.WriteLine($"[Error] {ex.Message} Please try again.");
+                                }
+                            }
+                            
                             break;
 
                         case "0":
