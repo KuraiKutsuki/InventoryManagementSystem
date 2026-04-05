@@ -37,6 +37,7 @@ namespace InventoryManagementSystem
                 MenuRow("6", "Update Product");
                 MenuRow("7", "Delete Product");
                 MenuRow("8", "Restock / Deduct Stock");
+                MenuRow("9", "Inventory Reports");
                 EmptyRow();
                 ThinDivider();
                 EmptyRow();
@@ -44,7 +45,7 @@ namespace InventoryManagementSystem
                 EmptyRow();
                 BottomBorder();
                 Console.WriteLine();
-                Console.Write("  Enter your choice: ");
+                Console.Write("Enter your choice: ");
 
                 string choice = Console.ReadLine() ?? "";
 
@@ -343,6 +344,61 @@ namespace InventoryManagementSystem
                                 }
                             }
                             
+                            break;
+
+                        case "9":
+                            bool reportMenu = true;
+                            while (reportMenu)
+                            {
+                                Console.Clear();
+                                TopBorder();
+                                CenteredRow("INVENTORY REPORTS");
+                                SectionDivider();
+                                MenuRow("1", "Transaction History");
+                                MenuRow("2", "Low Stock Items");
+                                MenuRow("3", "Total Inventory Value");
+                                MenuRow("0", "Back to Main Menu");
+                                BottomBorder();
+                                Console.Write("\n  Enter choice: ");
+
+                                string repChoice = Console.ReadLine() ?? "";
+                                if (repChoice == "0") break;
+
+                                if (repChoice == "1")
+                                {
+                                    PrintHeader("TRANSACTION HISTORY");
+                                    var trans = inventory.GetTransactions();
+                                    if (!trans.Any()) Console.WriteLine("No transactions recorded yet.");
+                                    else
+                                    {
+                                        foreach (var t in trans)
+                                        {
+                                            var pName = inventory.GetProducts().FirstOrDefault(p => p.Id == t.ProductId)?.Name ?? "Unknown";
+                                            Console.WriteLine($"[ID: {t.TransactionId}] {t.Date:yyyy-MM-dd HH:mm} | {t.TransactionType,-7} | {t.Quantity,4} units | Product: {pName}");
+                                        }
+                                    }
+                                }
+                                else if (repChoice == "2")
+                                {
+                                    PrintHeader("LOW STOCK ITEMS");
+                                    var lowStock = inventory.GetLowStockProducts();
+                                    if (!lowStock.Any()) Console.WriteLine("All products are sufficiently stocked.");
+                                    else
+                                    {
+                                        foreach (var p in lowStock) Console.WriteLine($"[ID: {p.Id}] {p.Name,-18} | Stock: {p.StockQuantity} (Threshold: {p.LowStockThreshold})");
+                                    }
+                                }
+                                else if (repChoice == "3")
+                                {
+                                    PrintHeader("TOTAL INVENTORY VALUE");
+                                    decimal totalVal = inventory.GetTotalInventoryValue();
+                                    Console.WriteLine($"Total Value of all stock: Php {totalVal:N2}");
+                                }
+                                else Console.WriteLine("[Error] Invalid choice.");
+
+                                Console.WriteLine("\nPress Enter to continue...");
+                                Console.ReadLine();
+                            }
                             break;
 
                         case "0":

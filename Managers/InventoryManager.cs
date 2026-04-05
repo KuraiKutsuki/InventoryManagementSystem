@@ -157,5 +157,20 @@ namespace InventoryManagementSystem.Managers
             _transactions.Add(new TransactionRecord(_nextTransactionId++, productId, "Deduct", amount));
             Console.WriteLine($"[Success] Deducted {amount} units from '{product.Name}'. New Stock: {product.StockQuantity}");
         }
+
+        public IReadOnlyList<TransactionRecord> GetTransactions()
+        {
+            return _transactions.AsReadOnly();
+        }
+
+        public IReadOnlyList<Product> GetLowStockProducts()
+        {
+            return _products.Where(p => p.StockQuantity <= p.LowStockThreshold).ToList().AsReadOnly();
+        }
+
+        public decimal GetTotalInventoryValue()
+        {
+            return _products.Sum(p => p.Price * p.StockQuantity);
+        }
     }
 }
