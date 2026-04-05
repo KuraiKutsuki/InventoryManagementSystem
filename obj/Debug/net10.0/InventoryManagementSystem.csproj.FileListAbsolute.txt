@@ -1,0 +1,14 @@
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\bin\Debug\net10.0\InventoryManagementSystem.exe
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\bin\Debug\net10.0\InventoryManagementSystem.deps.json
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\bin\Debug\net10.0\InventoryManagementSystem.runtimeconfig.json
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\bin\Debug\net10.0\InventoryManagementSystem.dll
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\bin\Debug\net10.0\InventoryManagementSystem.pdb
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.AssemblyInfoInputs.cache
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.AssemblyInfo.cs
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.csproj.CoreCompileInputs.cache
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.dll
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\refint\InventoryManagementSystem.dll
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.pdb
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\InventoryManagementSystem.genruntimeconfig.cache
+D:\ITELECT2\InventoryManagementSystem\InventoryManagementSystem\obj\Debug\net10.0\ref\InventoryManagementSystem.dll
